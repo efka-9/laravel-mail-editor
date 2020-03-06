@@ -1,11 +1,11 @@
-@extends('maileclipse::layout.app')
+@extends('layouts.app')
 
 @section('title', 'Edit Template ' . ucfirst($template['name']))
 
 @section('content')
 
      <style type="text/css">
-         
+
         .CodeMirror {
             height: 400px;
         }
@@ -59,7 +59,7 @@
                             <p style="font-size: .9em;"><b class="font-weight-sixhundred">Name:</b> {{ ucfirst($template['name']) }}</p>
                             <p style="font-size: .9em;"><b class="font-weight-sixhundred">Slug:</b> {{ $template['slug'] }}</p>
                             <p style="font-size: .9em;"><b class="font-weight-sixhundred">Description:</b> {{ $template['description'] }}</p>
-                            
+
                             <p style="font-size: .9em;"><b class="font-weight-sixhundred">Template View:</b> {{ 'maileclipse::templates.'.$template['slug'] }}</p>
 
                             <p style="font-size: .9em;"><b class="font-weight-sixhundred">Template Type:</b> {{ ucfirst($template['template_type']) }}</p>
@@ -82,7 +82,7 @@
                     </div>
 
                     <div class="card">
-                    
+
                     <ul class="nav nav-pills" id="pills-tab" role="tablist">
                       <li class="nav-item">
                         <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Editor</a>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
             </div>
-        </div>       
+        </div>
  </div>
 
 <script type="text/javascript">
@@ -180,14 +180,14 @@ $(document).ready(function(){
 
 	    	submitCallback: function () {
 
-	    		axios.post('{{ route('deleteTemplate') }}', { 
+	    		axios.post('{{ route('deleteTemplate') }}', {
 				  	templateslug: '{{ $template['slug'] }}',
 				  })
 
 		    .then(function (response) {
-		        
+
 		    	if (response.data.status == 'ok'){
-				    	
+
 		    		notie.alert({ type: 1, text: 'Template Deleted <br><small>Redirecting...</small>', time: 3 })
 
 				    setTimeout(function(){
@@ -195,10 +195,10 @@ $(document).ready(function(){
                     }, 3000);
 
 			    } else {
-			    	
+
 			    	notie.alert({ type: 'error', text: 'Template not deleted', time: 3 })
 			    }
-		        
+
 		    })
 
 		    .catch(function (error) {
@@ -346,7 +346,7 @@ $(document).ready(function(){
 				  method: "POST",
 				  url: "{{ route('previewTemplateMarkdownView') }}",
 				  data: { markdown: plainText, name: '{{ $template['slug'] }}' }
-				
+
 			}).done(function( HtmledTemplate ) {
 			    preview.innerHTML = HtmledTemplate;
 			});
@@ -367,7 +367,7 @@ $(document).ready(function(){
 	    output = `
 [component]: # ('mail::button',  ['url' => '`+ link +`'])
 ` + text + `
-[endcomponent]: # 
+[endcomponent]: #
 	    `;
 	    cm.replaceSelection(output);
 
@@ -383,7 +383,7 @@ $(document).ready(function(){
 	    output = `
 [component]: # ('mail::promotion')
 ` + text + `
-[endcomponent]: # 
+[endcomponent]: #
 	    `;
 	    cm.replaceSelection(output);
 
@@ -399,7 +399,7 @@ $(document).ready(function(){
 	    output = `
 [component]: # ('mail::panel')
 ` + text + `
-[endcomponent]: # 
+[endcomponent]: #
 	    `;
 	    cm.replaceSelection(output);
 
@@ -417,7 +417,7 @@ $(document).ready(function(){
 | ------------- |:-------------:| --------:|
 | Col 2 is      | Centered      | $10      |
 | Col 3 is      | Right-Aligned | $20      |
-[endcomponent]: # 
+[endcomponent]: #
 	    `;
 	    cm.replaceSelection(output);
 
@@ -452,17 +452,17 @@ $(document).ready(function(){
 	    		axios.post('{{ route('parseTemplate') }}', { markdown: simplemde.codemirror.getValue(), viewpath: "{{ $template['slug'] }}", template: true })
 
 		    .then(function (response) {
-		        
+
 		    	if (response.data.status == 'ok'){
-				    	
+
 		    		notie.alert({ type: 1, text: 'Template updated', time: 3 })
 
 				    localStorage.removeItem(templateID);
 			    } else {
-			    	
+
 			    	notie.alert({ type: 'error', text: 'Template not updated', time: 3 })
 			    }
-		        
+
 		    })
 
 		    .catch(function (error) {
@@ -496,7 +496,7 @@ $(document).ready(function(){
 	       toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image fullpage table | forecolor backcolor emoticons | preview | code",
 	       fullpage_default_encoding: "UTF-8",
 	       fullpage_default_doctype: "<!DOCTYPE html>",
-	       init_instance_callback: function (editor) 
+	       init_instance_callback: function (editor)
 	       {
 	    		editor.on('Change', function (e) {
 	      			if ($('.save-draft').hasClass('disabled')){
@@ -508,7 +508,7 @@ $(document).ready(function(){
 					editor.setContent(localStorage.getItem(templateID));
 				}
 
-				setTimeout(function(){ 
+				setTimeout(function(){
 					editor.execCommand("mceRepaint");
 				}, 2000);
 
@@ -529,17 +529,17 @@ $(document).ready(function(){
 	    		})
 
 		    .then(function (response) {
-		        
+
 		    	if (response.data.status == 'ok'){
-				    	
+
 		    		notie.alert({ type: 1, text: 'Template updated', time: 3 })
 
 				    localStorage.removeItem(templateID);
 			    } else {
-			    	
+
 			    	notie.alert({ type: 'error', text: 'Template not updated', time: 3 })
 			    }
-		        
+
 		    })
 
 		    .catch(function (error) {
@@ -565,7 +565,7 @@ $(document).ready(function(){
 	@endif
 
 });
-                
+
 </script>
-   
+
 @endsection

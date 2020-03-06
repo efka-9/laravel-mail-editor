@@ -1,4 +1,4 @@
-@extends('maileclipse::layout.app')
+@extends('layouts.app')
 
 @section('title', 'New Template')
 
@@ -13,7 +13,7 @@
         <li class="breadcrumb-item active" aria-current="page">Add Template</li>
       </ol>
     </nav>
-                
+
 
                 <div class="card mb-3">
                     <ul class="nav nav-pills" id="pills-tab" role="tablist">
@@ -158,5 +158,5 @@
                 </div>
 </div>
             </div>
-   
+
 @endsection

@@ -1,11 +1,11 @@
-@extends('maileclipse::layout.app')
+@extends('layouts.app')
 
 @section('title', 'Mailables')
 
 @section('content')
 
 <div class="col-lg-10 col-md-12">
-                
+
                 <div class="card my-4">
                     <div class="card-header d-flex align-items-center justify-content-between"><h5>{{ __('Mailables') }}</h5>
 
@@ -16,52 +16,51 @@
                     </div>
 
                     @if ($mailables->isEmpty())
-                    
+
                     @component('maileclipse::layout.emptydata')
-                        
+
                         <span class="mt-4">{{ __("We didn't find anything - just empty space.") }}</span><button class="btn btn-primary mt-3" data-toggle="modal" data-target="#newMailableModal">{{ __('Add New Mailable') }}</button>
 
                     @endcomponent
 
                     @endif
-
-                    @if (!$mailables->isEmpty())
-                    <!---->
-                    <table id="mailables_list" class="table table-responsive table-hover table-sm mb-0 penultimate-column-right">
-                        <thead>
-                            <tr>
-                                <th scope="col">{{ __('Name') }}</th>
-                                <th scope="col">{{ __('Namespace') }}</th>
-                                <th scope="col">{{ __('Last edited') }}</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($mailables->all() as $mailable)
-                            <tr id="mailable_item_{{ $mailable['name'] }}">
-                                <td class="pr-0">
-                                    {{ $mailable['name'] }} 
-                                </td>
-                                <td class="text-muted" title="/tee">{{ $mailable['namespace'] }} </td>
-
-                                <td class="table-fit"><span>{{ (\Carbon\Carbon::createFromTimeStamp($mailable['modified']))->diffForHumans() }}</span></td>
-
-                                <td class="table-fit">
-                                    <a href="{{ route('viewMailable', ['name' => $mailable['name']]) }}" class="table-action mr-3"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 16"><path d="M16.56 13.66a8 8 0 0 1-11.32 0L.3 8.7a1 1 0 0 1 0-1.42l4.95-4.95a8 8 0 0 1 11.32 0l4.95 4.95a1 1 0 0 1 0 1.42l-4.95 4.95-.01.01zm-9.9-1.42a6 6 0 0 0 8.48 0L19.38 8l-4.24-4.24a6 6 0 0 0-8.48 0L2.4 8l4.25 4.24h.01zM10.9 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"></path></svg>
-                                    </a>
-
-                                    <a href="#" class="table-action remove-item" data-mailable-name="{{ $mailable['name'] }}">
-                                    <svg enable-background="new 0 0 268.476 268.476" version="1.1" viewBox="0 0 268.476 268.476" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" class="remove">
-    <path d="m63.119 250.25s3.999 18.222 24.583 18.222h93.072c20.583 0 24.582-18.222 24.582-18.222l18.374-178.66h-178.98l18.373 178.66zm106.92-151.81c0-4.943 4.006-8.949 8.949-8.949s8.95 4.006 8.95 8.949l-8.95 134.24c0 4.943-4.007 8.949-8.949 8.949s-8.949-4.007-8.949-8.949l8.949-134.24zm-44.746 0c0-4.943 4.007-8.949 8.949-8.949 4.943 0 8.949 4.006 8.949 8.949v134.24c0 4.943-4.006 8.949-8.949 8.949s-8.949-4.007-8.949-8.949v-134.24zm-35.797-8.95c4.943 0 8.949 4.006 8.949 8.949l8.95 134.24c0 4.943-4.007 8.949-8.95 8.949-4.942 0-8.949-4.007-8.949-8.949l-8.949-134.24c0-4.943 4.007-8.95 8.949-8.95zm128.87-53.681h-39.376v-17.912c0-13.577-4.391-17.899-17.898-17.899h-53.696c-12.389 0-17.898 6.001-17.898 17.899v17.913h-39.376c-7.914 0-14.319 6.007-14.319 13.43 0 7.424 6.405 13.431 14.319 13.431h168.24c7.914 0 14.319-6.007 14.319-13.431 0-7.423-6.405-13.431-14.319-13.431zm-57.274 0h-53.695l1e-3 -17.913h53.695v17.913z" clip-rule="evenodd" fill-rule="evenodd"></path>
-</svg>
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                    @endif
                 </div>
+
+@if (!$mailables->isEmpty())
+    <!---->
+        <table id="mailables_list" class="table table-bordered custom-table">
+            <thead>
+            <tr>
+                <th scope="col">{{ __('Name') }}</th>
+                <th scope="col">{{ __('Namespace') }}</th>
+                <th scope="col">{{ __('Last edited') }}</th>
+                <th scope="col" class="text-center">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($mailables->all() as $mailable)
+                <tr id="mailable_item_{{ $mailable['name'] }}">
+                    <td class="pr-0">
+                        {{ $mailable['name'] }}
+                    </td>
+                    <td class="text-muted" title="/tee">{{ $mailable['namespace'] }} </td>
+
+                    <td class="table-fit"><span>{{ (\Carbon\Carbon::createFromTimeStamp($mailable['modified']))->diffForHumans() }}</span></td>
+
+                    <td class="table-fit text-center">
+                        <a href="{{ route('viewMailable', ['name' => $mailable['name']]) }}" class="table-action mr-3">
+                            <button class="btn btn-primary">Edit</button>
+                        </a>
+
+                        <a href="#" class="table-action remove-item" data-mailable-name="{{ $mailable['name'] }}">
+                            <button class="btn btn-danger">Delete</button>
+                        </a>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    @endif
 
                 <div class="modal fade" id="newMailableModal" tabindex="-1" role="dialog" aria-labelledby="newMailableModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -76,7 +75,7 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-warning new-mailable-alerts d-none" role="alert">
-          
+
         </div>
           <div class="form-group">
             <label for="mailableName">Name</label>
@@ -117,7 +116,7 @@
     $(document).ready(function(){
 
         if ($('#markdown--truth').is(':checked')) {
-                
+
                 $('.markdown-input').show();
             } else {
 
@@ -127,7 +126,7 @@
         $('#markdown--truth').change(
         function(){
             if ($(this).is(':checked')) {
-                
+
                 $('.markdown-input').show();
             } else {
 
@@ -179,9 +178,9 @@
         e.preventDefault();
         // /generateMailable
         // new-mailable-alerts
-        // 
-        // 
-        
+        //
+        //
+
 
     if ( $('input#markdown--truth').is(':checked') && $('#markdownView').val() == '')
     {
@@ -213,7 +212,7 @@
 
     });
 
-                
+
 </script>
-   
+
 @endsection

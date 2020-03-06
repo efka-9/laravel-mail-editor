@@ -1,11 +1,11 @@
-@extends('maileclipse::layout.app')
+@extends('layouts.app')
 
 @section('title', 'Create Template')
 
 @section('content')
 
      <style type="text/css">
-         
+
         .CodeMirror {
             height: 400px;
         }
@@ -47,7 +47,7 @@
     </nav>
         <div class="container">
             <div class="row my-4">
-                
+
                 <div class="col-md-12">
 
                     <div class="card mb-2">
@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="card">
-                    
+
                     <ul class="nav nav-pills" id="pills-tab" role="tablist">
                       <li class="nav-item">
                         <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Editor</a>
@@ -79,16 +79,16 @@
                     </div>
                 </div>
             </div>
-        </div>       
+        </div>
  </div>
 
 <script type="text/javascript">
 
-    
+
 $(document).ready(function(){
 
             @if ($skeleton['type'] === 'markdown')
-            
+
 
             var simplemde = new SimpleMDE(
                 {
@@ -220,7 +220,7 @@ $(document).ready(function(){
                           method: "POST",
                           url: "{{ route('previewTemplateMarkdownView') }}",
                           data: { markdown: plainText, name: 'new' }
-                        
+
                     }).done(function( HtmledTemplate ) {
                         preview.innerHTML = HtmledTemplate;
                     });
@@ -242,7 +242,7 @@ $(document).ready(function(){
                 output = `
 [component]: # ('mail::button',  ['url' => '`+ link +`'])
 ` + text + `
-[endcomponent]: # 
+[endcomponent]: #
                 `;
                 cm.replaceSelection(output);
 
@@ -258,7 +258,7 @@ $(document).ready(function(){
                 output = `
 [component]: # ('mail::promotion')
 ` + text + `
-[endcomponent]: # 
+[endcomponent]: #
                 `;
                 cm.replaceSelection(output);
 
@@ -274,7 +274,7 @@ $(document).ready(function(){
                 output = `
 [component]: # ('mail::panel')
 ` + text + `
-[endcomponent]: # 
+[endcomponent]: #
                 `;
                 cm.replaceSelection(output);
 
@@ -292,7 +292,7 @@ $(document).ready(function(){
 | ------------- |:-------------:| --------:|
 | Col 2 is      | Centered      | $10      |
 | Col 3 is      | Right-Aligned | $20      |
-[endcomponent]: # 
+[endcomponent]: #
                 `;
                 cm.replaceSelection(output);
 
@@ -322,14 +322,14 @@ $(document).ready(function(){
                fullpage_default_doctype: "<!DOCTYPE html>",
                init_instance_callback: function (editor)
                {
-                setTimeout(function(){ 
+                setTimeout(function(){
                     editor.execCommand("mceRepaint");
                 }, 5000);
                }
             });
 
 
-            
+
 
             $('.preview-toggle').click(function(){
                 tinyMCE.execCommand('mcePreview');return false;
@@ -358,7 +358,7 @@ $(document).ready(function(){
                     @if ($skeleton['type'] === 'markdown')
 
                     var postData = {
-                        content: simplemde.codemirror.getValue(), 
+                        content: simplemde.codemirror.getValue(),
                         template_name: templatename,
                         template_description: templatedescription,
                         plain_text: plaintextEditor.getValue(),
@@ -381,7 +381,7 @@ $(document).ready(function(){
 
                     @endif
 
-                    
+
                         axios.post('{{ route('createNewTemplate') }}', postData)
 
                     .then(function (response) {
@@ -421,7 +421,7 @@ $(document).ready(function(){
 
         });
 
-                
+
 </script>
-   
+
 @endsection

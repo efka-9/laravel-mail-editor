@@ -2,6 +2,9 @@
 
 namespace qoraiche\mailEclipse;
 
+use App\Elements\Canvas\Model\MailableCanvas;
+use App\Elements\Canvas\Repository\MailableCanvasRepository;
+
 use RegexIterator;
 use ErrorException;
 use ReflectionClass;
@@ -230,6 +233,8 @@ class mailEclipse
             }
 
             file_put_contents($dir."/{$templatename}.blade.php", self::templateComponentReplace($request->content));
+            $onePixel = '{!! !empty($onePixel) ? $onePixel : \' \' !!}';
+            $myfile = file_put_contents($dir."/{$templatename}.blade.php", $onePixel.PHP_EOL , FILE_APPEND | LOCK_EX);
 
             file_put_contents($dir."/{$templatename}_plain_text.blade.php", $request->plain_text);
 
@@ -443,6 +448,7 @@ class mailEclipse
 
         if ($request->input('markdown')) {
             $params->put('--markdown', $request->markdown);
+
         }
 
         if ($request->has('force')) {
@@ -453,8 +459,11 @@ class mailEclipse
 
         if ($exitCode > -1) {
 
-            // return redirect()->route('mailableList');
-            //
+            $mailableCanvasRepository = new MailableCanvasRepository();
+            $mailableCanvas = new MailableCanvas();
+            $mailableCanvas->setName($name);
+            $mailableCanvasRepository->create($mailableCanvas);
+
             return response()->json([
 
                 'status' => 'ok',

@@ -1,11 +1,11 @@
-@extends('maileclipse::layout.app')
+@extends('layouts.app')
 
 @section('title', 'Edit '.$name.' Template')
 
 @section('content')
 
      <style type="text/css">
-         
+
         .CodeMirror {
             height: 400px;
         }
@@ -78,7 +78,7 @@
                     </div>
 
                     <div class="card">
-                    
+
                     <ul class="nav nav-pills" id="pills-tab" role="tablist">
                       <li class="nav-item">
                         <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Editor</a>
@@ -88,7 +88,7 @@
                       </li>
                     </ul>
                     <div class="tab-content" id="pills-tabContent">
-                        
+
 
                       <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                         <div class="p-3" style="border-top: 1px solid #ccc;">
@@ -110,8 +110,8 @@
                                                 <a class="dropdown-item is-attribute view_data_param" param-parent-key="{{ $param['key'] }}" param-key="{{ $key }}" href="#param">{{ $key }}</a>
                                             @endforeach
 
-                                            @else 
-                                            
+                                            @else
+
                                             <span class="dropdown-item">No attributes found</span>
 
                                         @endif
@@ -165,11 +165,11 @@
                     </div>
                 </div>
             </div>
-        </div>       
+        </div>
  </div>
 
 <script type="text/javascript">
-    
+
 $(document).ready(function(){
 
 @if ( isset($templateData['template']) )
@@ -311,14 +311,14 @@ var templateID = "template_view_{{ $name }}_{{ $templateData['template_name'] }}
                   method: "POST",
                   url: "{{ route('previewMarkdownView') }}",
                   data: { markdown: plainText, namespace: '{{ addslashes($templateData['namespace']) }}', viewdata: "{{ serialize($templateData['view_data']) }}", name: '{{ $name }}' }
-                
+
             }).done(function( HtmledTemplate ) {
                 preview.innerHTML = HtmledTemplate;
             });
 
             return '';
         },
-        
+
     });
 
     function setButtonComponent(editor) {
@@ -331,7 +331,7 @@ var templateID = "template_view_{{ $name }}_{{ $templateData['template_name'] }}
         output = `
 [component]: # ('mail::button',  ['url' => ''])
 ` + text + `
-[endcomponent]: # 
+[endcomponent]: #
         `;
         cm.replaceSelection(output);
 
@@ -347,7 +347,7 @@ var templateID = "template_view_{{ $name }}_{{ $templateData['template_name'] }}
         output = `
 [component]: # ('mail::promotion')
 ` + text + `
-[endcomponent]: # 
+[endcomponent]: #
         `;
         cm.replaceSelection(output);
 
@@ -363,7 +363,7 @@ var templateID = "template_view_{{ $name }}_{{ $templateData['template_name'] }}
         output = `
 [component]: # ('mail::panel')
 ` + text + `
-[endcomponent]: # 
+[endcomponent]: #
         `;
         cm.replaceSelection(output);
 
@@ -381,7 +381,7 @@ var templateID = "template_view_{{ $name }}_{{ $templateData['template_name'] }}
 | ------------- |:-------------:| --------:|
 | Col 2 is      | Centered      | $10      |
 | Col 3 is      | Right-Aligned | $20      |
-[endcomponent]: # 
+[endcomponent]: #
         `;
         cm.replaceSelection(output);
 
@@ -431,11 +431,11 @@ var templateID = "template_view_{{ $name }}_{{ $templateData['template_name'] }}
             markdown: simplemde.codemirror.getValue(),
             viewpath: "{{ base64_encode($templateData['view_path']) }}"
         })
-        
+
     .then(function (response) {
 
         if (response.data.status == 'ok'){
-        
+
             localStorage.removeItem(templateID);
 
             notie.alert({ type: 1, text: 'Template updated', time: 3 })
@@ -444,7 +444,7 @@ var templateID = "template_view_{{ $name }}_{{ $templateData['template_name'] }}
             notie.alert({ type: 'error', text: 'Template not updated', time: 3 })
         }
 
-        
+
     })
     .catch(function (error) {
         notie.alert({ type: 'error', text: error, time: 2 })
@@ -460,13 +460,13 @@ var templateID = "template_view_{{ $name }}_{{ $templateData['template_name'] }}
         $.ajax({
           method: "POST",
           url: "{{ route('previewMarkdownView') }}",
-          data: { 
-            markdown: plainText, 
-            namespace: '{{ addslashes($templateData['namespace']) }}', 
-            viewdata: "{{ serialize($templateData['view_data']) }}", 
-            name: '{{ $name }}' 
+          data: {
+            markdown: plainText,
+            namespace: '{{ addslashes($templateData['namespace']) }}',
+            viewdata: "{{ serialize($templateData['view_data']) }}",
+            name: '{{ $name }}'
           }
-        
+
         }).done(function( HtmledTemplate ) {
             let data = HtmledTemplate;
             console.log(data);
@@ -510,7 +510,7 @@ content_css: "css/content.css",
 toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image fullpage | forecolor backcolor emoticons | preview | code",
 fullpage_default_encoding: "UTF-8",
 fullpage_default_doctype: "<!DOCTYPE html>",
-   init_instance_callback: function (editor) 
+   init_instance_callback: function (editor)
    {
         editor.on('Change', function (e) {
             if ($('.save-draft').hasClass('disabled')){
@@ -522,7 +522,7 @@ fullpage_default_doctype: "<!DOCTYPE html>",
             editor.setContent(localStorage.getItem(templateID));
         }
 
-        setTimeout(function(){ 
+        setTimeout(function(){
             editor.execCommand("mceRepaint");
         }, 2000);
     }
@@ -540,7 +540,7 @@ $('.view_data_param').click(function(){
 
         var output = `\{\{ $` + $(this).attr('param-parent-key') + '->' + param + ` \}\}`;
     }
-    
+
     tinymce.activeEditor.selection.setContent(output);
 });
 
@@ -571,7 +571,7 @@ $('.save-template').click(function(){
     .then(function (response) {
 
         if (response.data.status == 'ok'){
-        
+
             localStorage.removeItem(templateID);
 
             notie.alert({ type: 1, text: 'Template updated', time: 3 })
@@ -580,7 +580,7 @@ $('.save-template').click(function(){
             notie.alert({ type: 'error', text: 'Template not updated', time: 3 })
         }
 
-        
+
     })
     .catch(function (error) {
         notie.alert({ type: 'error', text: error, time: 2 })
@@ -618,7 +618,7 @@ var plaintextEditor = CodeMirror.fromTextArea(document.getElementById("plain_tex
     @endif
 
 });
-                
+
 </script>
-   
+
 @endsection

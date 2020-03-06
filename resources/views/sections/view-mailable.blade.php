@@ -1,4 +1,4 @@
-@extends('maileclipse::layout.app')
+@extends('layouts.app')
 
 @section('title', 'View Mailable')
 
@@ -12,7 +12,7 @@
         <li class="breadcrumb-item active" aria-current="page">{{ $resource['name'] }}</li>
       </ol>
     </nav>
-             
+
                 <div class="card my-4">
                     <div class="card-header d-flex align-items-center justify-content-between"><h5>Details</h5>
                     </div>
@@ -58,7 +58,7 @@
                             					{{ collect($resource['data']->from)->first()['address'] }}
 
                             					@else
-											
+
 												{{ config('mail.from.address') }} (default)
 
                             				@endif
@@ -73,7 +73,7 @@
                             					{{ collect($resource['data']->replyTo)->first()['address'] }}
 
                             					@else
-											
+
 												{{ config('mail.reply_to.address') }} (default)
 
                             				@endif
@@ -111,7 +111,7 @@
                     	@if ( !is_null($resource['view_path']) )
                     		<a class="btn btn-primary" href="{{ route('editMailable', ['name' => $resource['name']]) }}">Edit Template</a>
                     	@endif
-                    	
+
                     </div>
                     <div class="embed-responsive embed-responsive-16by9">
 					  <iframe class="embed-responsive-item" src="{{ route('previewMailable', [ 'name' => $resource['name'] ]) }}" allowfullscreen></iframe>
@@ -121,7 +121,7 @@
 
 <script type="text/javascript">
 
-                
+
 </script>
-   
+
 @endsection

@@ -2,6 +2,7 @@
 
 namespace qoraiche\mailEclipse\Http\Controllers;
 
+use App\Elements\Canvas\Repository\MailableCanvasRepository;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\App;
@@ -138,6 +139,9 @@ class MailablesController extends Controller
 
         if (file_exists($mailableFile)) {
             unlink($mailableFile);
+
+            $mailableCanavasRepository = new MailableCanvasRepository();
+            $mailableCanavasRepository->deleteByName($request->mailablename);
 
             return response()->json([
                 'status' => 'ok',
