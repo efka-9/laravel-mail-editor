@@ -3,6 +3,8 @@
 namespace qoraiche\mailEclipse\Http\Controllers;
 
 use App\Elements\Canvas\Repository\MailableCanvasRepository;
+use App\Elements\Entity\Mailable;
+use App\Elements\Repository\MailablesRepository;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\App;
@@ -140,8 +142,15 @@ class MailablesController extends Controller
         if (file_exists($mailableFile)) {
             unlink($mailableFile);
 
-            $mailableCanavasRepository = new MailableCanvasRepository();
-            $mailableCanavasRepository->deleteByName($request->mailablename);
+            /** @var Mailable $mailable */
+            $mailablesRepository = \LaravelDoctrine\ORM\Facades\EntityManager::getRepository(Mailable::class);
+
+            $mailable = $mailablesRepository->findOneBy([
+                'name' => $request->mailablename,
+            ]);
+
+            \LaravelDoctrine\ORM\Facades\EntityManager::remove($mailable);
+            \LaravelDoctrine\ORM\Facades\EntityManager::flush();
 
             return response()->json([
                 'status' => 'ok',

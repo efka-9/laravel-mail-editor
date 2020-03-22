@@ -5,6 +5,7 @@ namespace qoraiche\mailEclipse;
 use App\Elements\Canvas\Model\MailableCanvas;
 use App\Elements\Canvas\Repository\MailableCanvasRepository;
 
+use App\Elements\Entity\Mailable;
 use RegexIterator;
 use ErrorException;
 use ReflectionClass;
@@ -458,11 +459,12 @@ class mailEclipse
         $exitCode = Artisan::call('make:mail', $params->all());
 
         if ($exitCode > -1) {
+            $mailable = (new Mailable())
+                ->setName($name)
+                ->setCreatedAt();
 
-            $mailableCanvasRepository = new MailableCanvasRepository();
-            $mailableCanvas = new MailableCanvas();
-            $mailableCanvas->setName($name);
-            $mailableCanvasRepository->create($mailableCanvas);
+            \LaravelDoctrine\ORM\Facades\EntityManager::persist($mailable);
+            \LaravelDoctrine\ORM\Facades\EntityManager::flush();
 
             return response()->json([
 
