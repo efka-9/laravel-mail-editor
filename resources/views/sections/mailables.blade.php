@@ -4,31 +4,32 @@
 
 @section('content')
 
-<div class="col-lg-10 col-md-12">
+<div class="card my-4">
+    <div class="card-header d-flex justify-content-between"><h5>{{ __('Mailables') }}</h5>
+        @if (!$mailables->isEmpty())
+        <a class="btn btn-primary" href="{{ route('createMailable') }}" data-toggle="modal" data-target="#newMailableModal">{{ __('Add Mailable') }}</a>
+        @endif
+        <!-- Modal -->
+    </div>
 
-                <div class="card my-4">
-                    <div class="card-header d-flex align-items-center justify-content-between"><h5>{{ __('Mailables') }}</h5>
+    @if ($mailables->isEmpty())
 
-                        @if (!$mailables->isEmpty())
-                        <a class="btn btn-primary" href="{{ route('createMailable') }}" data-toggle="modal" data-target="#newMailableModal">{{ __('Add Mailable') }}</a>
-                        @endif
-                        <!-- Modal -->
-                    </div>
+    @component('maileclipse::layout.emptydata')
 
-                    @if ($mailables->isEmpty())
+        <span class="mt-4">{{ __("We didn't find anything - just empty space.") }}</span><button class="btn btn-primary mt-3" data-toggle="modal" data-target="#newMailableModal">{{ __('Add New Mailable') }}</button>
 
-                    @component('maileclipse::layout.emptydata')
+    @endcomponent
 
-                        <span class="mt-4">{{ __("We didn't find anything - just empty space.") }}</span><button class="btn btn-primary mt-3" data-toggle="modal" data-target="#newMailableModal">{{ __('Add New Mailable') }}</button>
-
-                    @endcomponent
-
-                    @endif
-                </div>
+    @endif
+</div>
 
 @if (!$mailables->isEmpty())
-    <!---->
-        <table id="mailables_list" class="table table-bordered custom-table">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Mailables</h3>
+        </div>
+        <div class="card-body">
+        <table id="mailables_list" class="table table-bordered table-hover dataTable dtr-inline">
             <thead>
             <tr>
                 <th scope="col">{{ __('Name') }}</th>
@@ -60,9 +61,10 @@
             @endforeach
             </tbody>
         </table>
+    </div>
     @endif
 
-                <div class="modal fade" id="newMailableModal" tabindex="-1" role="dialog" aria-labelledby="newMailableModal" aria-hidden="true">
+<div class="modal fade" id="newMailableModal" tabindex="-1" role="dialog" aria-labelledby="newMailableModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
   <form id="create_mailable" action="{{ route('generateMailable') }}" method="POST">
     @csrf
@@ -106,10 +108,9 @@
         <button type="submit" class="btn btn-primary">Create Mailable</button>
       </div>
     </div>
-</form>
+    </form>
   </div>
 </div>
-            </div>
 
 <script type="text/javascript">
 

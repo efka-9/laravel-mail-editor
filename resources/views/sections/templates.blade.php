@@ -4,70 +4,74 @@
 
 @section('content')
 
+<div class="card my-4">
+    <div class="card-header d-flex align-items-center justify-content-between"><h5>{{ __('Templates') }}</h5>
+        @if (!$templates->isEmpty())
+        <a href="{{ route('selectNewTemplate') }}" class="btn btn-primary">{{ __('Add Template') }}</a>
+        @endif
+    </div>
 
-<div class="col-lg-10 col-md-12">
+    @if ($templates->isEmpty())
 
-                <div class="card my-4">
-                    <div class="card-header d-flex align-items-center justify-content-between"><h5>{{ __('Templates') }}</h5>
-                        @if (!$templates->isEmpty())
-                        <a href="{{ route('selectNewTemplate') }}" class="btn btn-primary">{{ __('Add Template') }}</a>
-                        @endif
-                    </div>
+    @component('maileclipse::layout.emptydata')
 
-                    @if ($templates->isEmpty())
+        <span class="mt-4">{{ __("We didn't find anything - just empty space.") }}</span>
+        <a class="btn btn-primary mt-3" href="{{ route('selectNewTemplate') }}">{{ __('Add New Template') }}</a>
 
-                    @component('maileclipse::layout.emptydata')
+    @endcomponent
 
-                        <span class="mt-4">{{ __("We didn't find anything - just empty space.") }}</span>
-                        <a class="btn btn-primary mt-3" href="{{ route('selectNewTemplate') }}">{{ __('Add New Template') }}</a>
-
-                    @endcomponent
-
-                    @endif
-                    <!---->
-                </div>
+    @endif
+    <!---->
+</div>
 
 @if (!$templates->isEmpty())
     <!---->
-        <table id="templates_list" class="table table-bordered custom-table">
-            <thead>
-            <tr>
-                <th scope="col">{{ __('Name') }}</th>
-                <th scope="col">{{ __('Description') }}</th>
-                <th scope="col">{{ __('Template') }}</th>
-                <th scope="col">{{ __('') }}</th>
-                <th scope="col" class="text-center">{{ __('Type') }}</th>
-                <th scope="col" class="text-center">Action</th>
 
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($templates->all() as $template)
-                <tr id="template_item_{{ $template->template_slug }}">
-                    <td class="pr-0">{{ ucwords($template->template_name) }}</td>
-                    <td class="text-muted" title="/tee">{{ $template->template_description }}</td>
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Templates</h3>
+        </div>
+        <div class="card-body">
+            <table id="templates_list" class="table table-bordered table-hover dataTable dtr-inline">
+                <thead>
+                <tr>
+                    <th scope="col">{{ __('Name') }}</th>
+                    <th scope="col">{{ __('Description') }}</th>
+                    <th scope="col">{{ __('Template') }}</th>
+                    <th scope="col">{{ __('') }}</th>
+                    <th scope="col" class="text-center">{{ __('Type') }}</th>
+                    <th scope="col" class="text-center">Action</th>
 
-                    <td class="table-fit">{{ ucfirst($template->template_view_name) }}</td>
-
-
-                    <td class="table-fit text-muted">{{ ucfirst($template->template_skeleton) }}</td>
-
-                    <td class="table-fit text-center">{{ ucfirst($template->template_type) }}</td>
-
-                    <td class="table-fit text-center">
-                        <a href="{{ route('viewTemplate', [ 'templatename' => $template->template_slug ]) }}" class="table-action mr-3">
-                            <button class="btn btn-primary">Edit</button>
-                        </a>
-                        <a href="#" class="table-action remove-item" data-template-slug="{{ $template->template_slug }}" data-template-name="{{ $template->template_name }}">
-                        <button class="btn btn-danger">Delete</button>
-                        </a>
-                    </td>
                 </tr>
-            @endforeach
-            </tbody>
-        </table>
-    @endif
-            </div>
+                </thead>
+                <tbody>
+                @foreach($templates->all() as $template)
+                    <tr id="template_item_{{ $template->template_slug }}">
+                        <td class="pr-0">{{ ucwords($template->template_name) }}</td>
+                        <td class="text-muted" title="/tee">{{ $template->template_description }}</td>
+
+                        <td class="table-fit">{{ ucfirst($template->template_view_name) }}</td>
+
+
+                        <td class="table-fit text-muted">{{ ucfirst($template->template_skeleton) }}</td>
+
+                        <td class="table-fit text-center">{{ ucfirst($template->template_type) }}</td>
+
+                        <td class="table-fit text-center">
+                            <a href="{{ route('viewTemplate', [ 'templatename' => $template->template_slug ]) }}" class="table-action mr-3">
+                                <button class="btn btn-primary">Edit</button>
+                            </a>
+                            <a href="#" class="table-action remove-item" data-template-slug="{{ $template->template_slug }}" data-template-name="{{ $template->template_name }}">
+                                <button class="btn btn-danger">Delete</button>
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+@endif
 
 
 <script type="text/javascript">
